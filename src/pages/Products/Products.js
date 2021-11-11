@@ -7,6 +7,10 @@ import Form from '../../components/Forms/Form';
 import { useToggle } from '../../hooks/useToggle';
 import { useLS } from '../../hooks/useLS';
 
+// ====== REDUX ========== //
+import { useDispatch } from 'react-redux';
+import { filterValue } from '../../redux/products/actions';
+
 export default function ProductsPage() {
   const [filter, setFilter] = useState('');
   const [allProducts, setAllProducts] = useLS('products', []);
@@ -18,10 +22,20 @@ export default function ProductsPage() {
   }, [filter, allProducts]);
   const [showModal, setShowModal] = useToggle(false);
 
+  // ====== REDUX ========== //
+  const dispatch = useDispatch();
+  // ====== REDUX ========== //
+
   const addNewProduct = obj => setAllProducts(zuzuzu => [...zuzuzu, obj]);
   const deleteProduct = id =>
     setAllProducts(zuzuzu => zuzuzu.filter(prod => prod.id !== id));
-  const handleChangeFilter = useCallback(e => setFilter(e.target.value), []);
+  const handleChangeFilter = useCallback(
+    e => {
+      setFilter(e.target.value); // сетим локально
+      dispatch(filterValue(e.target.value)); // отправляем значение в редакс
+    },
+    [dispatch],
+  );
 
   return (
     <>

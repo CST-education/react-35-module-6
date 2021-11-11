@@ -1,7 +1,8 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { v4 as uuid } from 'uuid';
-import { addProduct, deleteProduct } from '../../redux/products/actions';
+import { addProduct } from '../../redux/products/actions';
+
 class Form extends Component {
   prodIdtitle = uuid();
   prodIdDesc = uuid();
@@ -50,8 +51,8 @@ class Form extends Component {
       description: desc,
       size,
     };
-    this.setState({ product });
-    this.props.addNewProduct(product); // !!!метод из App!!!
+    this.setState({ product }); // тут для себя пишем новый объект продукта в свой лок стейт
+    // this.props.addNewProduct(product); // !!!метод из App!!!
     this.props.onAdd(product); // диспатчим продукт в редакс
     this.resetForm();
   };
@@ -124,11 +125,6 @@ class Form extends Component {
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     productsList: state.products,
-//   };
-// };
 const mapDispatchToProps = dispatch => {
   return {
     onAdd: prod => dispatch(addProduct(prod)),
