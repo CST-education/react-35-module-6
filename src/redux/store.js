@@ -1,12 +1,47 @@
 // import { createStore } from 'redux';
 
-import { productReducer } from './products/reducers';
-
 // import { composeWithDevTools } from 'redux-devtools-extension';
 // export const store = createStore(productReducer, composeWithDevTools());
 
 import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+import { productsList, productFilter } from './products/reducers';
+import logger from 'redux-logger';
+
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+  key: 'products',
+  version: 1,
+  storage,
+  blacklist: ['filter'],
+};
+
+const productReducer = combineReducers({
+  products: productsList,
+  filter: productFilter,
+});
+const persistedProductReducer = persistReducer(persistConfig, productReducer);
 
 export const store = configureStore({
-  reducer: productReducer,
+  reducer: persistedProductReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(logger),
 });
+
+export const persistor = persistStore(store);

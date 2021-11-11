@@ -1,9 +1,10 @@
 import { Component, createRef } from 'react';
 import { Flipper, Flipped } from 'react-flip-toolkit';
+import { connect } from 'react-redux';
 import './RemoveItem.scss';
 import { GadgetWindow } from './WindowElem';
-
-export class DeleteButton extends Component {
+import { deleteProduct } from '../../redux/products/actions';
+class DeleteButton extends Component {
   state = {
     isOpen: this.props.isOpen,
   };
@@ -33,7 +34,8 @@ export class DeleteButton extends Component {
   // ===  Добавляем обработчик клика для кнопки Delete и вызываем полученный через пропс
   // метод удаления продукта и передаем его же полученный id
   handleDelete = () => {
-    this.props.onDelete(this.props.id);
+    // this.props.onDelete(this.props.id); // раньше получали метод из родителя
+    this.props.onDeleteProduct(this.props.id);
     this.setState({ isOpen: false });
   };
 
@@ -80,3 +82,9 @@ export class DeleteButton extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  onDeleteProduct: id => dispatch(deleteProduct(id)),
+});
+
+export default connect(null, mapDispatchToProps)(DeleteButton);

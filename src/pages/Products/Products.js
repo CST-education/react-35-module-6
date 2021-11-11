@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback } from 'react';
 
-import { ProductList } from '../../components/Products/ProductList';
+import ProductList from '../../components/Products/ProductList';
 import { Modal } from '../../components/Modal/Modal';
 import Form from '../../components/Forms/Form';
 
@@ -26,9 +26,9 @@ export default function ProductsPage() {
   const dispatch = useDispatch();
   // ====== REDUX ========== //
 
-  const addNewProduct = obj => setAllProducts(zuzuzu => [...zuzuzu, obj]);
-  const deleteProduct = id =>
-    setAllProducts(zuzuzu => zuzuzu.filter(prod => prod.id !== id));
+  // const addNewProduct = obj => setAllProducts(zuzuzu => [...zuzuzu, obj]);
+  // const deleteProduct = id =>
+  //   setAllProducts(zuzuzu => zuzuzu.filter(prod => prod.id !== id));
   const handleChangeFilter = useCallback(
     e => {
       setFilter(e.target.value); // сетим локально
@@ -41,7 +41,7 @@ export default function ProductsPage() {
     <>
       {showModal && (
         <Modal toggleModal={setShowModal}>
-          <Form addNewProduct={addNewProduct} />
+          <Form />
         </Modal>
       )}
       <h1>FE-35 Product</h1>
@@ -62,8 +62,8 @@ export default function ProductsPage() {
       <br />
       {/* === РЕНДЕР КОМПОНЕНТА СПИСКА ПРОДУКТОВ === */}
       <ProductList
-        products={filteredProducts}
-        onDeleteProduct={deleteProduct}
+      // products={filteredProducts}
+      // onDeleteProduct={deleteProduct}
       />
     </>
   );

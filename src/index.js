@@ -6,16 +6,19 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // импорт компонента Provider
 import { Provider } from 'react-redux';
 // импорт объекта глобального состояния
-import { store } from './redux/store';
+import { store, persistor } from './redux/store';
+
+import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      {/* Provider */}
+    <PersistGate persistor={persistor} loading={null}>
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
-    </Router>
+    </PersistGate>
   </React.StrictMode>,
   document.getElementById('root'),
 );

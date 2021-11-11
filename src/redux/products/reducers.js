@@ -1,14 +1,17 @@
-import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
+import { addProduct, deleteProduct, filterValue } from './actions';
+const initState = [
+  { id: '1', title: 'product-1' },
+  { id: '2', title: 'product-2' },
+  { id: '3', title: 'product-3' },
+];
 
-const initState = [{ id: '', title: 'product-1' }];
-
-const productsList = createReducer(initState, {
-  'product/add': (state, { payload }) => [...state, payload],
+export const productsList = createReducer(initState, {
+  [addProduct]: (state, { payload }) => [...state, payload],
   'product/delete': (state, { payload }) =>
-    state.filter(product => product.id !== payload.id),
+    state.filter(product => product.id !== payload),
 });
-const productFilter = createReducer('', {
+export const productFilter = createReducer('', {
   'filter/value': (_, { payload }) => payload,
 });
 // const productsList = (state = initState, action) => {
@@ -25,8 +28,3 @@ const productFilter = createReducer('', {
 // const productFilter = (state = '', { payload }) => {
 //   return payload;
 // };
-
-export const productReducer = combineReducers({
-  products: productsList,
-  filter: productFilter,
-});
